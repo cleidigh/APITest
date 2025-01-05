@@ -1,0 +1,48 @@
+{
+	"manifest_version": 2,
+	"name": "__MSG_extensionName__",
+	"description": "APITest",
+	"version": "1.0.1",
+	"author": "Christopher Leidigh",
+	"applications": {
+		"gecko": {
+			"id": "apitest@kokkini.net",
+			"strict_min_version": "115.0",
+			"strict_max_version": "128.*"
+		}
+	},
+	"browser_action": {
+		"default_area": "maintoolbar",
+		"default_title":"hw1",
+		"default_label":"hw1lab",
+		"default_icon": "ptng.png"
+	  },
+	  
+	"background": {
+    "page": "background.html"
+
+	},
+"permissions" : [
+    "menus"
+],
+	"icons": {
+		"32": "ptng.png"
+	},
+	"default_locale": "en_US",
+  "experiment_apis": {
+		"AsyncPrompts": {
+      "schema": "api/AsyncPrompts/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "AsyncPrompts"
+          ]
+        ],
+        "script": "api/AsyncPrompts/implementation.js"
+      }
+    }
+	}
+}
