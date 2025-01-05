@@ -29,18 +29,16 @@ var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
 
         async asyncAlert(title, text) {
 
-          ;
-
           let aomStartup = Cc[
             "@mozilla.org/addons/addon-manager-startup;1"
           ].getService(Ci.amIAddonManagerStartup);
           const manifestURI = Services.io.newURI(
             "manifest.json",
             null,
-            this.extension.rootURI
+            context.extension.rootURI
           );
-          this.chromeHandle = aomStartup.registerChrome(manifestURI, [
-            ["content", "formautofill", "chrome/content/"],
+          self.chromeHandle = aomStartup.registerChrome(manifestURI, [
+            ["content", "apim", "api/"],
           ]);
       
         
@@ -73,7 +71,7 @@ var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
 
   _addStyleSheet() {
     let head = top.document.head || top.document.getElementsByTagName('head')[0];
-    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "resource://apim/mboxmsg.css" });
+    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "chrome://apim/mboxmsg.css" });
     head.appendChild(style);
   }
 

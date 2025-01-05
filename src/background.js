@@ -21,9 +21,7 @@ await((async () => {
 		await messenger.menus.create({ id: "sub_2", parentId: "Top_Id", title: "Submenu 2", contexts: ["folder_pane"], onclick: test, visible: true });
 	}
 
-	await messenger.LegacyHelper.registerGlobalUrls([
-		["resource", "apim", "api/"],
-]);
+	
 
 })());
 
