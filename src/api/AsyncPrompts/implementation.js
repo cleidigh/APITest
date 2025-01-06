@@ -38,9 +38,10 @@ var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
             context.extension.rootURI
           );
           self.chromeHandle = aomStartup.registerChrome(manifestURI, [
-            ["content", "apim", "api/"],
+            ["content", "apitest", "chrome/"],
           ]);
       
+          var { ietngUtils } = ChromeUtils.import("chrome://apitest/content/ietngUtils.js");
         
           try {
             self._addStyleSheet();
@@ -71,7 +72,7 @@ var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
 
   _addStyleSheet() {
     let head = top.document.head || top.document.getElementsByTagName('head')[0];
-    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "chrome://apim/mboxmsg.css" });
+    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "chrome://apitest/mboxmsg.css" });
     head.appendChild(style);
   }
 

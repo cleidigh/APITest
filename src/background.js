@@ -4,6 +4,10 @@ console.debug('background Start');
 // test = 2 refresh,remove prevents exception 
 // test = 3 shows indentation differences, (no icon for msg menu - fixed in daily)
 
+messenger.WindowListener.registerChromeUrl([
+	["content", "apitest2", "chrome/"]
+]);
+
 var testRun = 3;
 
 await((async () => {
