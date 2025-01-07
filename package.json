@@ -1,7 +1,7 @@
 {
 	"title": "APITest",
 	"name": "APITest",
-	"version": "1.0.1",
+	"version": "1.0.0-t1",
 	"description": "APITest",
 	"main": "./content/overlay.js",
 	"author": "Christopher Leidigh",

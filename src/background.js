@@ -8,12 +8,12 @@ messenger.WindowListener.registerChromeUrl([
 	["content", "apitest2", "chrome/"]
 ]);
 
-var testRun = 3;
+var testRun = 1;
 
 await((async () => {
 
 	if (testRun == 1) {
-		await messenger.menus.create({ id: "Top_Id", title: "test1 - onclick ", contexts: ["message_list"], onclick: test });
+		await messenger.menus.create({ id: "Top_Id", title: "test1 - onclick ", contexts: ["folder_pane"], onclick: test });
 	} else if (testRun == 2) {
 		await messenger.menus.create({ id: "Top_Id", title: "test1 - onclick ", contexts: ["folder_pane"], onclick: test });
 		await messenger.menus.refresh();

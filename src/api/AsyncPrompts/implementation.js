@@ -17,32 +17,39 @@ const kCancel = 0;
 
 var top = Services.wm.getMostRecentWindow("mail:3pane").top;
 
+console.log("async loaded")
 var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
 
   getAPI(context) {
     let self = this;
+    self.context = context;
+
+    this.aomStartup = Cc[
+      "@mozilla.org/addons/addon-manager-startup;1"
+    ].getService(Ci.amIAddonManagerStartup);
+    this.resProto = Cc[
+      "@mozilla.org/network/protocol;1?name=resource"
+    ].getService(Ci.nsISubstitutingProtocolHandler);
+
+    this.chromeHandle = null;
+    this.chromeData = null;
+    this.resourceData = null;
 
     return {
       AsyncPrompts: {
+
         button: null,
         cancelButton: null,
 
         async asyncAlert(title, text) {
+          console.log("async class")
 
-          let aomStartup = Cc[
-            "@mozilla.org/addons/addon-manager-startup;1"
-          ].getService(Ci.amIAddonManagerStartup);
-          const manifestURI = Services.io.newURI(
-            "manifest.json",
-            null,
-            context.extension.rootURI
-          );
-          self.chromeHandle = aomStartup.registerChrome(manifestURI, [
-            ["content", "apitest", "chrome/"],
+          self._registerUrls([
+            ["resource", "apitest", "api/"]
           ]);
-      
-          var { ietngUtils } = ChromeUtils.import("chrome://apitest/content/ietngUtils.js");
-        
+
+          var { ietngUtils } = ChromeUtils.import("resource://apitest/ietngUtils.js");
+
           try {
             self._addStyleSheet();
             // Create the blocking overlay div
@@ -70,9 +77,49 @@ var AsyncPrompts = class extends ExtensionCommon.ExtensionAPI {
     };
   }
 
+  // registers chrome or resource urls
+  // method from WindowListener by JB
+  _registerUrls(data) {
+    let chromeData = [];
+    let resourceData = [];
+    for (let entry of data) {
+      if (entry[0] == "resource") resourceData.push(entry);
+      else chromeData.push(entry);
+    }
+
+    if (chromeData.length > 0) {
+      const manifestURI = Services.io.newURI(
+        "manifest.json",
+        null,
+        this.context.extension.rootURI
+      );
+      this.chromeHandle = aomStartup.registerChrome(
+        manifestURI,
+        chromeData
+      );
+    }
+
+    for (let res of resourceData) {
+      // [ "resource", "shortname" , "path" ]
+      let uri = Services.io.newURI(
+        res[2],
+        null,
+        this.context.extension.rootURI
+      );
+      this.resProto.setSubstitutionWithFlags(
+        res[1],
+        uri,
+        this.resProto.ALLOW_CONTENT_ACCESS
+      );
+    }
+
+    this.chromeData = chromeData;
+    this.resourceData = resourceData;
+  }
+
   _addStyleSheet() {
     let head = top.document.head || top.document.getElementsByTagName('head')[0];
-    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "chrome://apitest/mboxmsg.css" });
+    let style = this._addElementChild("link", "ietng-styles", head, [], { rel: "stylesheet", type: "text/css", href: "resource://apitest/mboxmsg.css" });
     head.appendChild(style);
   }
 
