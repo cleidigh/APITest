@@ -8,7 +8,7 @@
 		"gecko": {
 			"id": "apitest@kokkini.net",
 			"strict_min_version": "115.0",
-			"strict_max_version": "128.*"
+			"strict_max_version": "139.*"
 		}
 	},
 	"browser_action": {
@@ -19,7 +19,13 @@
 	  },
 	  
 	"background": {
-    "page": "background.html"
+    "scripts": [
+     "/Modules/misc.mjs",
+     "background.js"
+    
+    ],
+    "type": "module"
+
 
 	},
 "permissions" : [
